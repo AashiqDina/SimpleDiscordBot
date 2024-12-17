@@ -2,21 +2,24 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 // Bot login with token
-const token = '';
+const token = 'nope';
+const GIPHY_API = 'nope';
 client.login(token);
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
+const ZakID = '527170687668977665';
+const AaqilID = '474559839276630016';
+const AceID = '441656217383731221';
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 
     const imRegex = /\bI['|’]?m (.+)/i;
     const match = message.content.match(imRegex);
-    const DadJokesIgnoreUsers = ['', ''];
+    const DadJokesIgnoreUsers = ['1296424690121969746', '441656217383731221'];
     const Content = message.content.toLowerCase();
-    const GIFs = ['https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWpkNGV0ajk1bXRrb2FobXQ3d3dzaWFzbWo5aTBtaTNldzc2Z3pvbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohhwfAa9rbXaZe86c/giphy.gif','https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2d0NTlnZ3gzb3hydnd1aHNkMWc0a3ZocHZkZXJlaDN5czBneDB4bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YrJp9LFIDkwms/giphy.gif','https://tenor.com/bBX3k.gif', 'https://tenor.com/mnAdgbR5acL.gif', 'https://tenor.com/bz6iS.gif', 'https://tenor.com/bLCLF.gif','https://tenor.com/bSS2n.gif','https://tenor.com/bfKqq.gif','https://tenor.com/bkubZ.gif','https://tenor.com/bztlj.gif','https://tenor.com/bY1QT.gif','https://tenor.com/bZsQn.gif','https://tenor.com/bWf7D.gif','https://tenor.com/bWKXLWDr2Hd.gif','https://tenor.com/85AQ.gif','https://tenor.com/qceMT5PNSBv.gif','https://tenor.com/eprvYzkf6YC.gif','https://tenor.com/fD7iCYPgItu.gif','https://tenor.com/bVADn.gif','https://tenor.com/bVsGB.gif','https://tenor.com/rvV9ojC0gJe.gif','https://tenor.com/c0bg8YueGLh.gif','https://tenor.com/quzGAWh5vbC.gif','https://tenor.com/s9ABwA970KI.gif','https://tenor.com/b0yYJmCH9fJ.gif','https://tenor.com/oAVwshEUUdm.gif','https://tenor.com/re5kEdlMIPK.gif','https://tenor.com/rIY2PCH0blo.gif','https://tenor.com/dZwpFV0IHIU.gif','https://tenor.com/eBRfbGSV04A.gif','https://tenor.com/vjlhCFqUtZb.gif'];
 
     if (message.content === '!Dice' || message.content === '!dice') {
         const DiceGIFChoice = Math.floor(Math.random() * 4) + 1;
@@ -57,6 +60,59 @@ client.on('messageCreate', message => {
             message.channel.send(CoinGIF2);    
         }
     }
+    else if (Content === '!id') {
+        message.channel.send(message.author.id);
+    }
+
+    if(message.author.id === ZakID ){
+        if(Content === 'i hate u' || Content === 'i hate you' || Content === 'i hate you so much' || Content === 'i hate you so much' || Content === 'bro i hate you' || Content === 'bro i hate u'){
+            message.reply("Typical Zak, hating on everything");
+        }
+        if(Content === 'o' || Content === '0' || Content === 'ö'){
+            message.reply("Nobody literally nobody: \n Zak:");
+            const GIF = 'https://c.tenor.com/xNRuBYTeFH8AAAAd/tenor.gif';
+            message.channel.send(GIF);
+        }
+        if(Content === 'stop'){
+            const GIF = 'https://c.tenor.com/HWZPcgyaBG4AAAAC/tenor.gif';
+            message.reply(GIF);
+        }
+        if(Content === 'why'){
+            const GIF = 'https://c.tenor.com/at5xyyjzr_gAAAAC/tenor.gif';
+            message.reply(GIF);
+        }
+        if(Content === 'shush'){
+            const GIF = 'https://c.tenor.com/Bt7VJ0uQlSoAAAAC/tenor.gif';
+            message.reply(GIF);
+        }
+        if(Content === 'what' || Content === 'wha'){
+            message.reply("How bro felt after saying that:");
+            const GIF = 'https://media.tenor.com/04HdN4Wgs6oAAAAi/azumanga-daioh-chiyo-chan.gif';
+            message.channel.send(GIF);
+        }
+    }
+
+    if (message.content.startsWith('!gif')) {
+        const argument = message.content.split(' ').slice(1);
+        const query = argument.join(' ') || 'funny';
+    
+        try {
+          const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API}&q=${query}&limit=1`);
+          const data = await response.json();
+        
+            if (data.data.length > 0) {
+                const GIFUrl = data.data[0].images.original.url;
+                message.channel.send(`${GIFUrl}`);
+            } 
+            else {
+                message.channel.send(`Couldn't find any GIFs for "${query}".`);
+            }} 
+        catch (error) {
+            console.error('An error has occured:', error);
+          message.channel.send('Something fetching the GIF.');
+        }
+    }
+    
 
     if (match) {
         if (DadJokesIgnoreUsers.includes(message.author.id)){
@@ -88,6 +144,59 @@ client.on('messageCreate', async message => {
         } catch (error) {
             console.error(error);
             message.channel.send('Couldnt delete the messages');
+        }
+    }
+
+    if(message.author.id != 441656217383731221 && (Content === 'shut up' || Content === 'shutup')){
+        message.reply("NOW LISTEN HERE YOU LITTLE Sh****, IN THE NAME OF THE HOLY BEAN I SWEAR YOU WILL REGRET SAYING THAT");
+        const Member = message.guild.members.cache.get(message.author.id)
+        try{
+            await Member.timeout(30000, "THIS IS WHY YOU DONT SAY SHUT UP!!!")
+        }
+        catch (error){
+            console.error(error);
+        }
+    }
+
+    if (Content.startsWith('!spamzak')) {
+        const ZakAT = `<@${ZakID}>`;
+        const Args = message.content.split(' ');
+        const DeleteCount = parseInt(Args[1], 10);
+
+        if (!DeleteCount || DeleteCount < 1 || DeleteCount > 100) {
+            return message.reply('Can only message 100 time');
+        }
+
+        for(i = 0; i < DeleteCount; i++){
+            message.channel.send(`${ZakAT}, you are being called!`);
+        }
+    }
+
+    if (Content.startsWith('!spamaaqil')) {
+        const AaqilAT = `<@${AaqilID}>`;
+        const Args = message.content.split(' ');
+        const DeleteCount = parseInt(Args[1], 10);
+
+        if (!DeleteCount || DeleteCount < 1 || DeleteCount > 100) {
+            return message.reply('Can only message 100 time');
+        }
+
+        for(i = 0; i < DeleteCount; i++){
+            message.channel.send(`${AaqilAT}, you are being called!`);
+        }
+    }
+
+    if (Content.startsWith('!spamaashiq')) {
+        const AceAT = `<@${AceID}>`;
+        const Args = message.content.split(' ');
+        const DeleteCount = parseInt(Args[1], 10);
+
+        if (!DeleteCount || DeleteCount < 1 || DeleteCount > 3) {
+            return message.reply('Can only message 3 time');
+        }
+
+        for(i = 0; i < DeleteCount; i++){
+            message.channel.send(`${AceAT}, you are being called!`);
         }
     }
 
